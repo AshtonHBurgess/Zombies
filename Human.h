@@ -9,6 +9,8 @@
 
 #include "Organism.h"
 #include "City.h"
+
+
 class Human : public Organism
 {
 public:
@@ -17,10 +19,10 @@ public:
     void spawn();
     void move();
     int getSpecies();
-    bool starve();
+    void starve();
     bool validMove(int xPos, int yPos);
     void eat();
-
+     bool validEat(int cordinateX, int cordinateY) ;
 private:
 
 };

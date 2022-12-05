@@ -8,17 +8,19 @@
 #include <windows.h>
 
 
-//ASHTON PLEASE ADD REFERENCE FOR THIS GET RAND CODE:   URL:     AUTHOR:
+
 int City::getRandNumBetween(int start, int end)  {
     return rand() % (end - start + 1) + start;
 }
-//ASHTON PLEASE ADD REFERENCE FOR THIS GET RAND CODE:
+
 
 
 
 
 City::City() {
 //MAKE Map
+
+
     srand(time(NULL));
 //    timeStepCount = 0;
     for (int x = 0; x < GRIDSIZE; x++)
@@ -26,11 +28,8 @@ City::City() {
         for (int y = 0; y < GRIDSIZE; y++)
         {
             grid[x][y] = nullptr;
-
-
         }
     }
-
     //ADD ORGANISMS
     int zombieCount = 0;
     int humanCount = 0;
@@ -38,14 +37,9 @@ City::City() {
         int a = getRandNumBetween(0, GRIDSIZE - 1);
         int s = getRandNumBetween(0, GRIDSIZE - 1);
         if (grid[a][s] != nullptr) continue;
-
-
         grid[a][s] = new Zombie(this, a, s);
-
-
         zombieCount++;
     }
-
     while (humanCount < HUMAN_STARTCOUNT) {
         int a = getRandNumBetween(0, GRIDSIZE - 1);
         int s = getRandNumBetween(0, GRIDSIZE - 1);
@@ -77,6 +71,18 @@ void City::setOrganism(Organism *organism, int x, int y) {
 
     if ((x>=0) && (x<GRIDSIZE) && (y>=0) && (y<GRIDSIZE))
     {
+
+        grid[x][y] = organism;
+    }
+}
+
+void City::setNewOrganism(Organism *organism, int x, int y) {
+
+    if ((x>=0) && (x<GRIDSIZE) && (y>=0) && (y<GRIDSIZE))
+    {
+        organism->starvation=0;
+        organism->moved=false;
+        organism->breedTicks=0;
         grid[x][y] = organism;
     }
 }
@@ -98,75 +104,23 @@ void City::move() {
         }
     }
 
-//STARVE
-    //EAT
-    for (i=0; i<GRIDSIZE; i++)
-    {
-        for (j=0; j<GRIDSIZE; j++)
-        {
 
-            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2))//ZOMBIES
-            {
-                grid[i][j]->starve();
-//                if(this->grid[i][j]->hasEaten){
-//                    grid[i][j]->move();
-//
-//                }
-
-            }
-        }
-    }
-
-
-    //EAT
-    for (i=0; i<GRIDSIZE; i++)
-    {
-        for (j=0; j<GRIDSIZE; j++)
-        {
-
-            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2))//ZOMBIES
-            {
-                grid[i][j]->eat();
-//                if(this->grid[i][j]->hasEaten){
-//                    grid[i][j]->move();
-//
-//                }
-
-            }
-        }
-    }
-
-
-
-
-// MOVE
+    // MOVE
     for (i=0; i<GRIDSIZE; i++)
     {
         for (j=0; j<GRIDSIZE; j++)
         {
             if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==1))//HUMANS
             {
-                    grid[i][j]->move();
-
-            }
-            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2)  && (grid[i][j]->moved== false))//ZOMBIES
-            {
                 grid[i][j]->move();
-//                if(this->grid[i][j]->hasEaten){
-//                    grid[i][j]->move();
-//
-//                }
 
             }
+
         }
     }
 
 
-
-
-
-//
-//////    //SPAWN
+    //SPAWN HUMANS
     for (i=0; i<GRIDSIZE; i++)
     {
         for (j=0; j<GRIDSIZE; j++)
@@ -175,10 +129,95 @@ void City::move() {
             {
                 grid[i][j]->spawn();
             }
+
+        }
+    }
+
+
+
+
+    //
+//////    //SPAWN ZOMBIES
+    for (i=0; i<GRIDSIZE; i++)
+    {
+        for (j=0; j<GRIDSIZE; j++)
+        {
             if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2))
             {
                 grid[i][j]->spawn();
             }
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+//
+////    //EAT
+    for (i=0; i<GRIDSIZE; i++)
+    {
+        for (j=0; j<GRIDSIZE; j++)
+        {
+
+            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2))//ZOMBIES
+            {
+                grid[i][j]->eat();
+            }
+        }
+    }
+
+
+
+
+// MOVE ZOMBIES
+    for (i=0; i<GRIDSIZE; i++)
+    {
+        for (j=0; j<GRIDSIZE; j++)
+        {
+//            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==1))//HUMANS
+//            {
+//                    grid[i][j]->move();
+//
+//            }
+            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2)  && (grid[i][j]->moved== false))//ZOMBIES
+            {
+                grid[i][j]->move();
+            }
+        }
+    }
+
+
+
+
+
+////STARVE
+    for (i=0; i<GRIDSIZE; i++)
+    {
+        for (j=0; j<GRIDSIZE; j++)
+        {
+
+
+                if(grid[i][j]!=NULL && grid[i][j]->starvation >=3)
+                {
+                     grid[i][j]->starve();
+
+                    cured++;
+//                    grid[i][j] = new Human(this, i, j);
+
+
+                }
+                //spawn new human inplace of zombie
+
+
         }
     }
 
@@ -193,7 +232,7 @@ void City::printGrid( City &city) {
 
     for (int x = 0; x < GRIDSIZE; x++){
         for (int y = 0; y < GRIDSIZE; y++){
-            if (city.grid[x][y] == nullptr)
+            if (city.grid[x][y] == NULL)
                 cout << "-";
 //            output << SPACE_CH;
             else if (city.grid[x][y]->getSpecies() == 1)
@@ -276,5 +315,21 @@ int City::countType(int type) {
     }
 
     return typeCount;
+}
+
+int City::getEaten() {
+    return eaten;
+}
+
+int City::getRecruited() {
+    return recruited;
+}
+
+int City::getCured() {
+    return cured;
+}
+
+int City::getConverted() {
+    return converted;
 }
 

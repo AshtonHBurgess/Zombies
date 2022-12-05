@@ -1,16 +1,32 @@
 #include "Human.h"
 
-Human::Human() {
-
-}
-
-Human::Human(City *city, int x, int y) : Organism(city, x, y) {
-
-}
+//
+//Human::Human() {
+//
+//    city = NULL;
+//    moved = false;
+//    hasEaten = false;
+//    breedTicks = 0;
+//    starvation=0;
+//    x=0;
+//    y=0;
+//
+//}
+//
+//Human::Human(City *city, int x, int y) {
+//    this->city = city;
+//    moved = false;
+//    hasEaten = false;
+//    breedTicks = 0;
+//    this->x=x;
+//    this->y=y;
+//    starvation=0;
+//    city->setOrganism(this,x,y);
+//}
 
 bool Human::validMove(int cordinateX, int cordinateY) {
 
-    if((cordinateX>=0 && cordinateX<GRIDSIZE && cordinateY>=0 && cordinateY<GRIDSIZE)&& (city->grid[cordinateX][cordinateY] == NULL))
+    if((cordinateX>=0 && cordinateX<GRIDSIZE && cordinateY>=0 && cordinateY<GRIDSIZE) && (city->grid[cordinateX][cordinateY] == NULL))
     {
         return true;
     }
@@ -68,40 +84,44 @@ if(!moveTargets.empty()){
         case N: {
             if (validMove(this->x, this->y + 1)) {
                 Human *human = new Human(city,x,y+1);
+                city->recruited++;
 
             }
             this->breedTicks=0;
-            std::cout<<"Human recruited"<<std::endl;
+//            std::cout<<"Human recruited"<<std::endl;
             break;
         }
         case S: {
             if (validMove(this->x, this->y - 1)) {
                 Human *human = new Human(city,x,y-1);
+                city->recruited++;
             }
             this->breedTicks=0;
-            std::cout<<"Human recruited"<<std::endl;
+//            std::cout<<"Human recruited"<<std::endl;
             break;
         }
         case W: {
             if (validMove(this->x - 1, this->y)) {
                 Human *human = new Human(city,x-1,y);
+                city->recruited++;
             }
             this->breedTicks=0;
-            std::cout<<"Human recruited"<<std::endl;
+//            std::cout<<"Human recruited"<<std::endl;
             break;
         }
         case E: {
             if (validMove(this->x + 1, this->y)) {
                 Human *human = new Human(city,x+1,y);
+                city->recruited++;
             }
             this->breedTicks=0;
-            std::cout<<"Human recruited"<<std::endl;
+//            std::cout<<"Human recruited"<<std::endl;
             break;
         }
         default:
             //NO Available Positions
         {
-            this->breedTicks=0;
+//            this->breedTicks=0;
             break;
         }
     }//END OF SWITCH MOVE
@@ -109,7 +129,7 @@ if(!moveTargets.empty()){
 }//IF VECTOR EMPTY
     }//IF BREED COUNTER == BREED COUNTER
 
-}//END OF SPA ZOMBIE
+}//END OF SPA
 
 
 
@@ -237,24 +257,36 @@ void Human::move() {
 //            break;
 //        }
             default: {
-                moved = true;
-                breedTicks++;
+//                moved = true;
+//                breedTicks++;
                 break;
             }
         }//END OF SWITCH MOVE
     }//VECTOR EMPTY
-
+    moveTargets.clear();
 }//END MOVE
 
 int Human::getSpecies() {
     return 1;
 }
 
-bool Human::starve() {
+void Human::starve() {
     //humans dont starve
-    return false;
+
 }
 
 void Human::eat() {
+
+}
+
+bool Human::validEat(int cordinateX, int cordinateY) {
+    return false;
+}
+
+Human::Human() {
+
+}
+
+Human::Human(City *city, int x, int y) : Organism(city, x, y) {
 
 }

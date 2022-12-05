@@ -13,28 +13,24 @@
 class Organism;
 class City
 {
-// creates a 2d array of type organism
-//    srand((unsigned int)time(NULL));
-//    cout << rand()%4 << endl;
-    //friend classes allow protected classes to be public permissions
 public:
     City();
     ~City();
 //    virtual ~City();
     Organism *getOrganism( int x, int y );
     void setOrganism( Organism *organism, int x, int y );
+    void setNewOrganism( Organism *organism, int x, int y );
 //    friend ostream& operator<<( ostream &output, City &city );
     void printGrid( City &city );
-
     void move();
     int countType(int type);
-
-
-
     bool hasDiversity();//Ashton Added    randomize
     int getRandNumBetween(int startRange, int endRange) ;
     int  getGeneration();
-
+    int  getEaten();
+    int  getRecruited();
+    int  getCured();
+    int  getConverted();
 
     //Can either use protected with friend class members,
     //   private with getters and setters
@@ -45,6 +41,10 @@ public:
 protected:
     Organism *grid[GRIDSIZE][GRIDSIZE];
     int gen;
+    int eaten;
+    int recruited;
+    int converted;
+    int cured;
 };
 
 

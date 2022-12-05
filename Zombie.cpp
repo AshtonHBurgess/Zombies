@@ -4,17 +4,29 @@
 #include "Zombie.h"
 
 
-Zombie::Zombie() {
+//Zombie::Zombie() {
+//
+//    city = NULL;
+//    moved = false;
+//    hasEaten = false;
+//    breedTicks = 0;
+//    starvation=0;
+//    x=0;
+//    y=0;
+//
+//}
+//
+//Zombie::Zombie(City *city, int x, int y) {
+//    this->city = city;
+//    moved = false;
+//    hasEaten = false;
+//    breedTicks = 0;
+//    this->x=x;
+//    this->y=y;
+//    starvation=0;
+//    city->setOrganism(this,x,y);
+//}
 
-}
-
-Zombie::Zombie(City *city, int x, int y) : Organism(city, x, y) {
-
-}
-
-Zombie::~Zombie() {
-
-}
 
 bool Zombie::validMove(int cordinateX, int cordinateY)  {
 
@@ -30,7 +42,6 @@ bool Zombie::validMove(int cordinateX, int cordinateY)  {
 }
 
 bool Zombie::validEat(int cordinateX, int cordinateY) {
-
     if((cordinateX>=0 && cordinateX<GRIDSIZE && cordinateY>=0 && cordinateY<GRIDSIZE)
        && (city->grid[cordinateX][cordinateY] != NULL) && city->grid[cordinateX][cordinateY]->getSpecies()==1)
     {//NULL makes sure there's no organism in that location
@@ -55,117 +66,143 @@ void Zombie::spawn() {
 
         using namespace std;
 //    vector<City> moveTargets;
-        vector<int> moveTargets ;
+        vector<int> convertTargets ;
 
-    if (validMove(this->x - 1, this->y+1)) {
-        moveTargets.push_back(NE);
-    }
-        if (validMove(this->x , this->y+1)) {
-            moveTargets.push_back(N);
+        if (validEat(this->x + 1, this->y+1)) {
+            convertTargets.push_back(NE);
         }
-    if (validMove(this->x+1, this->y+1)) {
-        moveTargets.push_back(NW);
-    }
-        if (validMove(this->x+1, this->y)) {
-            moveTargets.push_back(E);
+        if (validEat(this->x , this->y+1)) {
+            convertTargets.push_back(N);
         }
-    if (validMove(this->x+1, this->y-1)) {
-        moveTargets.push_back(SW);
-    }
-        if (validMove(this->x, this->y-1)) {
-            moveTargets.push_back(S);
+        if (validEat(this->x-1, this->y+1)) {
+            convertTargets.push_back(NW);
         }
-    if (validMove(this->x-1, this->y-1)) {
-        moveTargets.push_back(SE);
-    }
-        if (validMove(this->x-1, this->y)) {
-            moveTargets.push_back(W);
+        if (validEat(this->x+1, this->y)) {
+            convertTargets.push_back(E);
+        }
+        if (validEat(this->x+1, this->y-1)) {
+            convertTargets.push_back(SW);
+        }
+        if (validEat(this->x, this->y-1)) {
+            convertTargets.push_back(S);
+        }
+        if (validEat(this->x+1, this->y-1)) {
+            convertTargets.push_back(SE);
+        }
+        if (validEat(this->x-1, this->y)) {
+            convertTargets.push_back(W);
         }
 
 //SHUFFLE
-        if(!moveTargets.empty()){
+        if(!convertTargets.empty()){
 
 
             unsigned seed = chrono::system_clock::now().time_since_epoch().count();//create random seed using system clock
-            shuffle(moveTargets.begin(),moveTargets.end(),default_random_engine(seed));
+            shuffle(convertTargets.begin(),convertTargets.end(),default_random_engine(seed));
 
-            switch (moveTargets[0]) {
+            switch (convertTargets[0]) {
                 case N: {
-                    if (validMove(this->x, this->y + 1)) {
-                        Zombie *human = new Zombie(city,x,y+1);
-
-                    }
                     this->breedTicks=0;
+
+                        city->setNewOrganism(this, x, y + 1);
+                        city->converted++;
+//
+
+
+
                     std::cout<<"Zombie recruited"<<std::endl;
                     break;
                 }
                 case S: {
-                    if (validMove(this->x, this->y - 1)) {
-                        Zombie *human = new Zombie(city,x,y-1);
-                    }
                     this->breedTicks=0;
+
+                        city->setNewOrganism(this, x, y - 1);
+                    city->converted++;
+
+
+
                     std::cout<<"Zombie recruited"<<std::endl;
                     break;
                 }
                 case W: {
-                    if (validMove(this->x - 1, this->y)) {
-                        Zombie *human = new Zombie(city,x-1,y);
-                    }
                     this->breedTicks=0;
+
+                        city->setNewOrganism(this, x-1, y);
+                    city->converted++;
+
+
+
                     std::cout<<"Zombie recruited"<<std::endl;
                     break;
                 }
                 case E: {
-                    if (validMove(this->x + 1, this->y)) {
-                        Zombie *human = new Zombie(city,x+1,y);
-                    }
                     this->breedTicks=0;
+
+                        city->setNewOrganism(this, x, y + 1);
+                    city->converted++;
+
+
+
                     std::cout<<"Zombie recruited"<<std::endl;
                     break;
                 }
                 case NW: {
-                    if (validMove(this->x -1, this->y+1)) {
-                        Zombie *human = new Zombie(city,x-1,y+1);
-                    }
                     this->breedTicks=0;
+
+                        city->setNewOrganism(this, x-1, y + 1);
+                    city->converted++;
+
+
+
                     std::cout<<"Zombie recruited"<<std::endl;
                     break;
                 }
                 case NE: {
-                    if (validMove(this->x +1, this->y+1)) {
-                        Zombie *human = new Zombie(city,x+1,y+1);
-                    }
-
                     this->breedTicks=0;
+
+                        city->setNewOrganism(this, x+1, y + 1);
+                    city->converted++;
+
+
+
+
                     std::cout<<"Zombie recruited"<<std::endl;
                     break;
                 }
                 case SW: {
-                    if (validMove(this->x -1, this->y-1)) {
-                        Zombie *human = new Zombie(city,x-1,y-1);
-                    }
                     this->breedTicks=0;
+
+                        city->setNewOrganism(this, x-1, y - 1);
+                    city->converted++;
+
+
+
                     std::cout<<"Zombie recruited"<<std::endl;
                     break;
                 }
                 case SE: {
-                    if (validMove(this->x +1, this->y-1)) {
-                        Zombie *human = new Zombie(city,x+1,y-1);
-                    }
                     this->breedTicks=0;
+
+                        city->setNewOrganism(this, x+1, y -1);
+                    city->converted++;
+
+
+
                     std::cout<<"Zombie recruited"<<std::endl;
                     break;
                 }
                 default:
                     //NO Available Positions
                 {
-                    this->breedTicks=0;
+//                    this->breedTicks=0;
                     break;
                 }
             }//END OF SWITCH MOVE
 
         }//IF VECTOR EMPTY
+        convertTargets.clear();
     }//IF BREED COUNTER == BREED COUNTER
+//    this->breedTicks=0;
 
 }//END OF SPA ZOMBIE
 
@@ -183,17 +220,13 @@ int Zombie::getSpecies() {
     return 2;
 }
 
-bool Zombie::starve() {
+void Zombie::starve() {
     using namespace std;
-    if(this->starvation == ZOMBIE_STARVE)
-    {
+    if (this->starvation >= ZOMBIE_STARVE) {
         city->setOrganism(NULL, x, y);
-        cout<<"Zombie starved"<<endl;
-        return true;
+cout<<"starved Zombie"<<endl;
 
     }
-    else
-        return false;
 }
 
 void Zombie::move() {
@@ -201,25 +234,25 @@ void Zombie::move() {
 //    vector<City> moveTargets;
     vector<int> moveTargets ;
 
-    if (validMove(this->x - 1, this->y+1)) {
+    if (validMove(this->x + 1, this->y+1)) {
         moveTargets.push_back(NE);
     }
     if (validMove(this->x , this->y+1)) {
         moveTargets.push_back(N);
     }
-    if (validMove(this->x+1, this->y+1)) {
+    if (validMove(this->x-1, this->y+1)) {
         moveTargets.push_back(NW);
     }
     if (validMove(this->x+1, this->y)) {
         moveTargets.push_back(E);
     }
-    if (validMove(this->x+1, this->y-1)) {
+    if (validMove(this->x-1, this->y-1)) {
         moveTargets.push_back(SW);
     }
     if (validMove(this->x, this->y-1)) {
         moveTargets.push_back(S);
     }
-    if (validMove(this->x-1, this->y-1)) {
+    if (validMove(this->x+1, this->y-1)) {
         moveTargets.push_back(SE);
     }
     if (validMove(this->x-1, this->y)) {
@@ -235,100 +268,108 @@ void Zombie::move() {
         switch (moveTargets[0]) {
             case N: {
                 if (validMove(this->x, this->y + 1)) {
+                    this->breedTicks++;
+                    this->starvation++;
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x, y + 1);
                     this->y += 1;
                     moved = true;
-                    this->breedTicks++;
-                    this->starvation++;
+
                 }
                 break;
             }
             case S: {
                 if (validMove(this->x, this->y - 1)) {
-                    city->setOrganism(NULL, x, y);
-                    city->setOrganism(this, x, y - 1);
-                    this->y -= 1;
                     moved = true;
                     this->breedTicks++;
                     this->starvation++;
+                    city->setOrganism(NULL, x, y);
+                    city->setOrganism(this, x, y - 1);
+                    this->y -= 1;
+
                 }
                 break;
             }
             case W: {
                 if (validMove(this->x - 1, this->y)) {
-                    city->setOrganism(NULL, x, y);
-                    city->setOrganism(this, x - 1, y);
-                    this->x -= 1;
                     moved = true;
                     this->breedTicks++;
                     this->starvation++;
+                    city->setOrganism(NULL, x, y);
+                    city->setOrganism(this, x - 1, y);
+                    this->x -= 1;
+
 
                 }
                 break;
             }
             case E: {
                 if (validMove(this->x + 1, this->y)) {
-                    city->setOrganism(NULL, x, y);
-                    city->setOrganism(this, x + 1, y);
-                    this->x += 1;
                     moved = true;
                     this->breedTicks++;
                     this->starvation++;
+                    city->setOrganism(NULL, x, y);
+                    city->setOrganism(this, x + 1, y);
+                    this->x += 1;
+
                 }
                 break;
             }
         case NW: {
             if (validMove(this->x - 1, this->y + 1)) {
+                moved = true;
+                this->breedTicks++;
+                this->starvation++;
                 city->setOrganism(NULL, x, y);
                 city->setOrganism(this, x - 1, y + 1);
                 this->x -= 1;
                 this->y += 1;
-                moved = true;
-                this->breedTicks++;
-                this->starvation++;
+
             }
             break;
         }
         case NE: {
             if (validMove(this->x + 1, this->y + 1)) {
+                moved = true;
+                this->breedTicks++;
+                this->starvation++;
                 city->setOrganism(NULL, x, y);
                 city->setOrganism(this, x + 1, y + 1);
                 this->x += 1;
                 this->y += 1;
-                moved = true;
-                this->breedTicks++;
-                this->starvation++;
+
             }
             break;
         }
         case SE: {
             if (validMove(this->x + 1, this->y - 1)) {
+                moved = true;
+                this->breedTicks++;
+                this->starvation++;
                 city->setOrganism(NULL, x, y);
                 city->setOrganism(this, x + 1, y - 1);
                 this->x += 1;
                 this->y -= 1;
-                moved = true;
-                this->breedTicks++;
-                this->starvation++;
+
             }
             break;
         }
         case SW: {
             if (validMove(this->x- 1, this->y - 1)) {
+                moved = true;
+                this->breedTicks++;
+                this->starvation++;
                 city->setOrganism(NULL, x, y);
                 city->setOrganism(this, x - 1, y - 1);
                 this->x -= 1;
                 this->y -= 1;
-                moved = true;
-                this->breedTicks++;
-                this->starvation++;
+
             }
             break;
         }
             default: {
                 moved = true;
-                breedTicks++;
+                this->breedTicks++;
                 this->starvation++;
                 break;
             }
@@ -350,19 +391,19 @@ void Zombie::eat() {
     if (validEat(this->x, this->y + 1)) {
         moveTargets.push_back(N);
     }
-    if (validEat(this->x + 1, this->y + 1)) {
+    if (validEat(this->x - 1, this->y + 1)) {
         moveTargets.push_back(NW);
     }
     if (validEat(this->x + 1, this->y)) {
         moveTargets.push_back(E);
     }
-    if (validEat(this->x + 1, this->y - 1)) {
+    if (validEat(this->x - 1, this->y - 1)) {
         moveTargets.push_back(SW);
     }
     if (validEat(this->x, this->y - 1)) {
         moveTargets.push_back(S);
     }
-    if (validEat(this->x - 1, this->y - 1)) {
+    if (validEat(this->x + 1, this->y - 1)) {
         moveTargets.push_back(SE);
     }
     if (validEat(this->x - 1, this->y)) {
@@ -381,8 +422,9 @@ void Zombie::eat() {
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x, y + 1);
                     this->y += 1;
-                    this->starvation = 0;
+                    this->starvation=0;
                     this->breedTicks++;
+                    this->city->eaten++;
                     hasEaten = true;
                     moved = true;
                 }
@@ -393,8 +435,9 @@ void Zombie::eat() {
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x, y - 1);
                     this->y -= 1;
-                    this->starvation = 0;
+                    this->starvation=0;
                     this->breedTicks++;
+                    this->city->eaten++;
                     hasEaten = true;
                     moved = true;
                 }
@@ -406,8 +449,9 @@ void Zombie::eat() {
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x - 1, y);
                     this->x -= 1;
-                    this->starvation = 0;
+                    this->starvation=0;
                     this->breedTicks++;
+                    this->city->eaten++;
                     hasEaten = true;
                     moved = true;
                 }
@@ -418,8 +462,9 @@ void Zombie::eat() {
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x + 1, y);
                     this->x += 1;
-                    this->starvation = 0;
+                    this->starvation=0;
                     this->breedTicks++;
+                    this->city->eaten++;
                     hasEaten = true;
                     moved = true;
                 }
@@ -432,8 +477,9 @@ void Zombie::eat() {
                     city->setOrganism(this, x - 1, y + 1);
                     this->x -= 1;
                     this->y += 1;
-                    this->starvation = 0;
+                    this->starvation=0;
                     this->breedTicks++;
+                    this->city->eaten++;
                     hasEaten = true;
                     moved = true;
                     break;
@@ -445,8 +491,9 @@ void Zombie::eat() {
                         city->setOrganism(this, x + 1, y + 1);
                         this->x += 1;
                         this->y += 1;
-                        this->starvation = 0;
+                        this->starvation=0;
                         this->breedTicks++;
+                        this->city->eaten++;
                         hasEaten = true;
                         moved = true;
                     }
@@ -459,8 +506,9 @@ void Zombie::eat() {
                         city->setOrganism(this, x + 1, y - 1);
                         this->x += 1;
                         this->y -= 1;
-                        this->starvation = 0;
+                        this->starvation=0;
                         this->breedTicks++;
+                        this->city->eaten++;
                         hasEaten = true;
                         moved = true;
                     }
@@ -472,8 +520,9 @@ void Zombie::eat() {
                     city->setOrganism(this, x - 1, y - 1);
                     this->x -= 1;
                     this->y -= 1;
-                    this->starvation = 0;
+                    this->starvation=0;
                     this->breedTicks++;
+                    this->city->eaten++;
                     hasEaten = true;
                     moved = true;
                 }
@@ -484,8 +533,22 @@ void Zombie::eat() {
                 break;
             }
         }//END OF SWITCH MOVE
+
     }//VECTOR EMPTY
-}//END OF EAT
+
+
+        moveTargets.clear();
+
+}
+
+Zombie::Zombie() {
+
+}
+
+Zombie::Zombie(City *city, int x, int y) : Organism(city, x, y) {
+
+}
+//END OF EAT
 
 
 
