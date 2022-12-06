@@ -151,7 +151,6 @@ void Human::move() {
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x, y + 1);
                     this->y += 1;
-                    moved = true;
                     this->breedTicks++;
                 }
                 break;
@@ -161,7 +160,6 @@ void Human::move() {
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x, y - 1);
                     this->y -= 1;
-                    moved = true;
                     this->breedTicks++;
                 }
                 break;
@@ -171,9 +169,7 @@ void Human::move() {
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x - 1, y);
                     this->x -= 1;
-                    moved = true;
                     this->breedTicks++;
-
                 }
                 break;
             }
@@ -182,48 +178,31 @@ void Human::move() {
                     city->setOrganism(NULL, x, y);
                     city->setOrganism(this, x + 1, y);
                     this->x += 1;
-                    moved = true;
                     this->breedTicks++;
                 }
                 break;
             }
-
             default: {
-                moved = true;
-                breedTicks++;
                 break;
             }
         }//END OF SWITCH MOVE
     }//VECTOR EMPTY
     moveTargets.clear();
 }//END MOVE
-
 int Human::getSpecies() {
     return 1;
 }
-
-
-
 void Human::eat() {
-
 }
-
 bool Human::validEat(int cordinateX, int cordinateY) {
     return false;
 }
-
 Human::Human() {
-
 }
-
 Human::Human(City *city, int x, int y) : Organism(city, x, y) {
-
 }
-
 Human::~Human() {
-
 }
-
 bool Human::starve() {
     return false;
 }

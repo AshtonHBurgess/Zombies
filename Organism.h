@@ -25,11 +25,9 @@ class Organism
 protected:
     int x;
     int y;
-    bool moved;
-    bool hasEaten;
     int breedTicks;
     City *city;
-    int starvation;
+    int starveCount;
 
 public:
     Organism();

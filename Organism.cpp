@@ -9,10 +9,8 @@
 Organism::Organism() {
 
     city = nullptr;
-    moved = false;
-    hasEaten = false;
     breedTicks = 0;
-    starvation=0;
+    starveCount=0;
     x=0;
     y=0;
 
@@ -20,12 +18,10 @@ Organism::Organism() {
 
 Organism::Organism(City *city, int x, int y) {
     this->city = city;
-    moved = false;
-    hasEaten = false;
     breedTicks = 0;
     this->x=x;
     this->y=y;
-    starvation=0;
+//    starveCount=0;
     city->setOrganism(this,x,y);
 }
 

@@ -81,8 +81,8 @@ void City::setNewOrganism(Organism *organism, int x, int y) {
 
     if ((x>=0) && (x<GRIDSIZE) && (y>=0) && (y<GRIDSIZE))
     {
-        organism->starvation=0;
-        organism->moved=false;
+
+        organism->starveCount=0;
         organism->breedTicks=0;
         grid[x][y] = organism;
     }
@@ -97,8 +97,6 @@ void City::move() {
         {
             if (grid[i][j]!=NULL)
             {
-                grid[i][j]->moved = false;
-                grid[i][j]->hasEaten = false;
             }
         }
     }
@@ -114,25 +112,13 @@ void City::move() {
             }
         }
     }
-// MOVE ZOMBIES
+
+    // MOVE HUMANS && ZOMBIES
     for (i=0; i<GRIDSIZE; i++)
     {
         for (j=0; j<GRIDSIZE; j++)
         {
-            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2))//ZOMBIES
-            {
-
-                grid[i][j]->move();
-
-            }
-        }
-    }
-    // MOVE HUMANS
-    for (i=0; i<GRIDSIZE; i++)
-    {
-        for (j=0; j<GRIDSIZE; j++)
-        {
-            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==1))//HUMANS
+            if ((grid[i][j]!=NULL) )//HUMANS
             {
                 grid[i][j]->move();
 
@@ -164,23 +150,18 @@ void City::move() {
 
         }
     }
-
+//
 //STARVE
     for (i=0; i<GRIDSIZE; i++)
     {
         for (j=0; j<GRIDSIZE; j++)
         {
 
-
-            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2) && grid[i][j]->starvation >= ZOMBIE_STARVE)
+            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2) && grid[i][j]->starveCount >= ZOMBIE_STARVE)
             {
-                Human *human = new Human(this, i, j);
+                grid[i][j]->starve();
+                cured++;
             }
-
-
-
-
-
         }
     }
     this->gen++;
@@ -214,17 +195,16 @@ void City::printGrid( City &city) {
     SetConsoleTextAttribute( h, STANDARD_COLOR );
 
     //RESET
-    for (int i=0; i<GRIDSIZE; i++)
-    {
-        for (int j=0; j<GRIDSIZE; j++)
-        {
-            if (grid[i][j]!=NULL)
-            {
-                grid[i][j]->moved=false;
-                grid[i][j]->hasEaten=false;
-            }
-        }//FOR
-    }//FOR
+//    for (int i=0; i<GRIDSIZE; i++)
+//    {
+//        for (int j=0; j<GRIDSIZE; j++)
+//        {
+//            if (grid[i][j]!=NULL)
+//            {
+//
+//            }
+//        }//FOR
+//    }//FOR
 }//END OF PRINT GRID
 
 
