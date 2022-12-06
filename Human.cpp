@@ -25,8 +25,12 @@
 //}
 
 bool Human::validMove(int cordinateX, int cordinateY) {
-
-    if((cordinateX>=0 && cordinateX<GRIDSIZE && cordinateY>=0 && cordinateY<GRIDSIZE) && (city->grid[cordinateX][cordinateY] == NULL))
+    if((cordinateX>=0 && cordinateX<GRIDSIZE)
+    && (cordinateY>=0 && cordinateY<GRIDSIZE)
+    && (city->grid[cordinateX][cordinateY] == NULL)
+//    && (city->grid[cordinateX][cordinateY]->getSpecies() != 2)
+//    && ( city->grid[cordinateX][cordinateY]->getSpecies() !=1 )
+    )
     {
         return true;
     }
@@ -39,47 +43,28 @@ bool Human::validMove(int cordinateX, int cordinateY) {
 
 
 void Human::spawn() {
-//                enum direction_NUM{N=1, S=2, W=3,E=4,NW=5,NE=6,SE=7,SW=8 };
-//
+    using namespace std;
+
     if  (this->breedTicks >= HUMAN_BREED)
     {
-
-        using namespace std;
-//    vector<City> moveTargets;
         vector<int> moveTargets ;
-
-//    if (validMove(this->x - 1, this->y+1)) {
-//        moveTargets.push_back(NE);
-//    }
         if (validMove(this->x , this->y+1)) {
             moveTargets.push_back(N);
         }
-//    if (validMove(this->x+1, this->y+1)) {
-//        moveTargets.push_back(NW);
-//    }
         if (validMove(this->x+1, this->y)) {
             moveTargets.push_back(E);
         }
-//    if (validMove(this->x+1, this->y-1)) {
-//        moveTargets.push_back(SW);
-//    }
         if (validMove(this->x, this->y-1)) {
             moveTargets.push_back(S);
         }
-//    if (validMove(this->x-1, this->y-1)) {
-//        moveTargets.push_back(SE);
-//    }
         if (validMove(this->x-1, this->y)) {
             moveTargets.push_back(W);
         }
 
 //SHUFFLE
 if(!moveTargets.empty()){
-
-
     unsigned seed = chrono::system_clock::now().time_since_epoch().count();//create random seed using system clock
     shuffle(moveTargets.begin(),moveTargets.end(),default_random_engine(seed));
-
     switch (moveTargets[0]) {
         case N: {
             if (validMove(this->x, this->y + 1)) {
@@ -139,32 +124,22 @@ void Human::move() {
 //    vector<City> moveTargets;
     vector<int> moveTargets ;
 
-//    if (validMove(this->x - 1, this->y+1)) {
-//        moveTargets.push_back(NE);
-//    }
     if (validMove(this->x , this->y+1)) {
         moveTargets.push_back(N);
     }
-//    if (validMove(this->x+1, this->y+1)) {
-//        moveTargets.push_back(NW);
-//    }
+
     if (validMove(this->x+1, this->y)) {
         moveTargets.push_back(E);
     }
-//    if (validMove(this->x+1, this->y-1)) {
-//        moveTargets.push_back(SW);
-//    }
+
     if (validMove(this->x, this->y-1)) {
         moveTargets.push_back(S);
     }
-//    if (validMove(this->x-1, this->y-1)) {
-//        moveTargets.push_back(SE);
-//    }
+
     if (validMove(this->x-1, this->y)) {
         moveTargets.push_back(W);
     }
 //SHUFFLE
-
 
     if(!moveTargets.empty()) {
         unsigned seed = chrono::system_clock::now().time_since_epoch().count();//create random seed using system clock
@@ -212,53 +187,10 @@ void Human::move() {
                 }
                 break;
             }
-//        case NW: {
-//            if (validMove(this->x - 1, this->y + 1)) {
-//                city->setOrganism(NULL, x, y);
-//                city->setOrganism(this, x - 1, y + 1);
-//                this->x -= 1;
-//                this->y += 1;
-//                moved = true;
-//                this->breedTicks++;
-//            }
-//            break;
-//        }
-//        case NE: {
-//            if (validMove(this->x + 1, this->y + 1)) {
-//                city->setOrganism(NULL, x, y);
-//                city->setOrganism(this, x + 1, y + 1);
-//                this->x += 1;
-//                this->y += 1;
-//                moved = true;
-//                this->breedTicks++;
-//            }
-//            break;
-//        }
-//        case SE: {
-//            if (validMove(this->x + 1, this->y - 1)) {
-//                city->setOrganism(NULL, x, y);
-//                city->setOrganism(this, x + 1, y - 1);
-//                this->x += 1;
-//                this->y -= 1;
-//                moved = true;
-//                this->breedTicks++;
-//            }
-//            break;
-//        }
-//        case SW: {
-//            if (validMove(this->x- 1, this->y - 1)) {
-//                city->setOrganism(NULL, x, y);
-//                city->setOrganism(this, x - 1, y - 1);
-//                this->x -= 1;
-//                this->y -= 1;
-//                moved = true;
-//                this->breedTicks++;
-//            }
-//            break;
-//        }
+
             default: {
-//                moved = true;
-//                breedTicks++;
+                moved = true;
+                breedTicks++;
                 break;
             }
         }//END OF SWITCH MOVE
@@ -270,10 +202,7 @@ int Human::getSpecies() {
     return 1;
 }
 
-void Human::starve() {
-    //humans dont starve
 
-}
 
 void Human::eat() {
 
@@ -293,4 +222,8 @@ Human::Human(City *city, int x, int y) : Organism(city, x, y) {
 
 Human::~Human() {
 
+}
+
+bool Human::starve() {
+    return false;
 }

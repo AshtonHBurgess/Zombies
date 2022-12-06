@@ -39,7 +39,7 @@ public:
     virtual void move() = 0;
     virtual bool validMove(int cordinateX, int cordinateY) =0;
     virtual int getSpecies() = 0;
-    virtual void starve() = 0;
+    virtual bool starve()=0;
     virtual void eat() = 0;
     virtual bool validEat(int cordinateX, int cordinateY) =0;
     enum direction_NUM{NW,N,NE,E,SE,S,SW,W};

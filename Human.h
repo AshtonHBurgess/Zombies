@@ -20,10 +20,10 @@ public:
     void spawn();
     void move();
     int getSpecies();
-    void starve();
     bool validMove(int xPos, int yPos);
     void eat();
      bool validEat(int cordinateX, int cordinateY) ;
+     bool starve();
 private:
 
 };

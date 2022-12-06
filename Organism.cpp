@@ -8,7 +8,7 @@
 
 Organism::Organism() {
 
-    city = NULL;
+    city = nullptr;
     moved = false;
     hasEaten = false;
     breedTicks = 0;
@@ -32,3 +32,6 @@ Organism::Organism(City *city, int x, int y) {
 Organism::~Organism() {
 
 }
+
+
+

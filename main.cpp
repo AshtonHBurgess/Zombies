@@ -48,7 +48,7 @@ int main() {
 //Do the simulation
     int iteration =0;
 //    while (iteration<ITERATIONS) { //while both humans and zombies exist
-    while (city->hasDiversity() && iteration<ITERATIONS) { //while both humans and zombies exist
+    while (city->hasDiversity() || iteration<ITERATIONS) { //while both humans and zombies exist
         iteration++;
 //        int j =0;
 //    while (j<10) { //while both humans and zombies exist

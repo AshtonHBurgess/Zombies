@@ -49,7 +49,7 @@ City::City() {
         grid[a][s] = new Human(this, a, s);
         humanCount++;
     }
-
+cured=0,converted=0, recruited=0, gen=0;
 }
 
 City::~City() {
@@ -73,7 +73,6 @@ void City::setOrganism(Organism *organism, int x, int y) {
 
     if ((x>=0) && (x<GRIDSIZE) && (y>=0) && (y<GRIDSIZE))
     {
-
         grid[x][y] = organism;
     }
 }
@@ -90,8 +89,6 @@ void City::setNewOrganism(Organism *organism, int x, int y) {
 }
 
 void City::move() {
-
-
     int i,j;
     //reset organisms to not moved
     for (i=0; i<GRIDSIZE; i++)
@@ -105,9 +102,32 @@ void City::move() {
             }
         }
     }
+//EAT
+    for (i=0; i<GRIDSIZE; i++)
+    {
+        for (j=0; j<GRIDSIZE; j++)
+        {
 
+            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2))//ZOMBIES
+            {
+                grid[i][j]->eat();
+            }
+        }
+    }
+// MOVE ZOMBIES
+    for (i=0; i<GRIDSIZE; i++)
+    {
+        for (j=0; j<GRIDSIZE; j++)
+        {
+            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2))//ZOMBIES
+            {
 
-    // MOVE
+                grid[i][j]->move();
+
+            }
+        }
+    }
+    // MOVE HUMANS
     for (i=0; i<GRIDSIZE; i++)
     {
         for (j=0; j<GRIDSIZE; j++)
@@ -120,8 +140,6 @@ void City::move() {
 
         }
     }
-
-
     //SPAWN HUMANS
     for (i=0; i<GRIDSIZE; i++)
     {
@@ -134,12 +152,7 @@ void City::move() {
 
         }
     }
-
-
-
-
-    //
-//////    //SPAWN ZOMBIES
+//SPAWN ZOMBIES
     for (i=0; i<GRIDSIZE; i++)
     {
         for (j=0; j<GRIDSIZE; j++)
@@ -152,79 +165,24 @@ void City::move() {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-//
-////    //EAT
+//STARVE
     for (i=0; i<GRIDSIZE; i++)
     {
         for (j=0; j<GRIDSIZE; j++)
         {
 
-            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2))//ZOMBIES
+
+            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2) && grid[i][j]->starvation >= ZOMBIE_STARVE)
             {
-                grid[i][j]->eat();
+                Human *human = new Human(this, i, j);
             }
-        }
-    }
 
 
 
-
-// MOVE ZOMBIES
-    for (i=0; i<GRIDSIZE; i++)
-    {
-        for (j=0; j<GRIDSIZE; j++)
-        {
-//            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==1))//HUMANS
-//            {
-//                    grid[i][j]->move();
-//
-//            }
-            if ((grid[i][j]!=NULL) && (grid[i][j]->getSpecies()==2)  && (grid[i][j]->moved== false))//ZOMBIES
-            {
-                grid[i][j]->move();
-            }
-        }
-    }
-
-
-
-
-
-////STARVE
-    for (i=0; i<GRIDSIZE; i++)
-    {
-        for (j=0; j<GRIDSIZE; j++)
-        {
-
-
-                if(grid[i][j]!=NULL && grid[i][j]->starvation >=3)
-                {
-                     grid[i][j]->starve();
-
-//                    cured++;
-//                    grid[i][j] = new Human(this, i, j);
-
-
-                }
-                //spawn new human inplace of zombie
 
 
         }
     }
-
-
-
     this->gen++;
 }//END OF CITY MOVE
 
@@ -252,10 +210,8 @@ void City::printGrid( City &city) {
         }
 
         cout << endl;
-    }
+    }//FOR
     SetConsoleTextAttribute( h, STANDARD_COLOR );
-
-
 
     //RESET
     for (int i=0; i<GRIDSIZE; i++)
@@ -266,11 +222,10 @@ void City::printGrid( City &city) {
             {
                 grid[i][j]->moved=false;
                 grid[i][j]->hasEaten=false;
-
             }
-        }
-    }
-}
+        }//FOR
+    }//FOR
+}//END OF PRINT GRID
 
 
 
@@ -294,13 +249,10 @@ bool City::hasDiversity() {
             }
         }
 
-    }
+    }//FOR
     return (hasHuman&&hasZombie);
-}
+}//END HAS DIVERSITY
 
-//int City::getGeneration() {
-//    return gen;
-//}
 
 int City::countType(int type) {
     int typeCount=0;
@@ -317,7 +269,7 @@ int City::countType(int type) {
     }
 
     return typeCount;
-}
+}//END COUNT TYPE
 
 int City::getEaten() {
     return eaten;
