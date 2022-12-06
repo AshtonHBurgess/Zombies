@@ -174,7 +174,7 @@ void City::printGrid( City &city) {
     for (int x = 0; x < GRIDSIZE; x++){
         for (int y = 0; y < GRIDSIZE; y++){
             if (city.grid[x][y] == NULL)
-                cout << "-";
+                cout << SPACE_CH;
 //            output << SPACE_CH;
             else if (city.grid[x][y]->getSpecies() == 1)
             {
