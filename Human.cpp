@@ -290,3 +290,7 @@ Human::Human() {
 Human::Human(City *city, int x, int y) : Organism(city, x, y) {
 
 }
+
+Human::~Human() {
+
+}

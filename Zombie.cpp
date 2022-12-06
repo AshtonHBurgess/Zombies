@@ -548,6 +548,10 @@ Zombie::Zombie() {
 Zombie::Zombie(City *city, int x, int y) : Organism(city, x, y) {
 
 }
+
+Zombie::~Zombie() {
+
+}
 //END OF EAT
 
 

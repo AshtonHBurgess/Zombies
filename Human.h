@@ -16,6 +16,7 @@ class Human : public Organism
 public:
     Human();
     Human( City *city, int x, int y );
+    virtual ~Human();
     void spawn();
     void move();
     int getSpecies();

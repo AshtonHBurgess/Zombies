@@ -48,7 +48,7 @@ int main() {
 //Do the simulation
     int iteration =0;
 //    while (iteration<ITERATIONS) { //while both humans and zombies exist
-    while (city->hasDiversity() || iteration<ITERATIONS) { //while both humans and zombies exist
+    while (city->hasDiversity() && iteration<ITERATIONS) { //while both humans and zombies exist
         iteration++;
 //        int j =0;
 //    while (j<10) { //while both humans and zombies exist
@@ -75,19 +75,24 @@ int main() {
 //        cout << *city; //prints city
 
     }//end while
-    cout << "GENERATION " << city->getGeneration() << endl;
-    cout << "HUMANS: " << to_string(city->countType(1)) << endl;
-    cout << "ZOMBIES: " << to_string(city->countType(2)) << endl;
-    cout << "HUMANS  EATEN: " << to_string(city->getEaten()) << endl;
+
+//
+
+    cout << "GENERATION: " << city->getGeneration() << endl;
+    cout << "HUMANS: " << city->countType(1) << endl;
+    cout << "ZOMBIES: " << city->countType(2) << endl;
+
+//
+    cout << "HUMANS  EATEN: " << city->getEaten() << endl;
     cout << "Converted: " << city->getConverted() << endl;
     cout << "Recruited: " << to_string(city->getRecruited()) << endl;
-    cout << "Cured: " << to_string(city->getCured()) << endl;
-
-
+    cout << "Cured: " << city->getCured() << endl;
+//
+//
     cout<<"\n\n\n\n";
     cout << "STARTING SPECS: " << endl;
-    cout << "HUMANS: " << to_string(HUMAN_STARTCOUNT) << endl;
-    cout << "ZOMBIES: " << to_string(ZOMBIE_STARTCOUNT) << endl;
+    cout << "HUMANS: " << HUMAN_STARTCOUNT << endl;
+    cout << "ZOMBIES: " << ZOMBIE_STARTCOUNT << endl;
 
 
 }//end main

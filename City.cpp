@@ -1,6 +1,8 @@
 
-#include "City.h"
+
 #include "GameSpecs.h"
+#include "Organism.h"
+#include "City.h"
 #include "Zombie.h"
 #include "Human.h"
 
@@ -210,7 +212,7 @@ void City::move() {
                 {
                      grid[i][j]->starve();
 
-                    cured++;
+//                    cured++;
 //                    grid[i][j] = new Human(this, i, j);
 
 
@@ -296,9 +298,9 @@ bool City::hasDiversity() {
     return (hasHuman&&hasZombie);
 }
 
-int City::getGeneration() {
-    return gen;
-}
+//int City::getGeneration() {
+//    return gen;
+//}
 
 int City::countType(int type) {
     int typeCount=0;
@@ -331,5 +333,9 @@ int City::getCured() {
 
 int City::getConverted() {
     return converted;
+}
+
+int City::getGeneration() {
+    return gen;
 }
 

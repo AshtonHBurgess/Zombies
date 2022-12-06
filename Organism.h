@@ -7,19 +7,21 @@
 
 
 #include <iostream>
-#include "City.h"
 #include "GameSpecs.h"
+#include "City.h"
+
 
 #include <vector>
 #include <algorithm>
 #include <random>
 #include <chrono>
-//using namespace std;
 
 class City;
 
 class Organism
 {
+
+    friend class City;
 protected:
     int x;
     int y;
@@ -28,7 +30,7 @@ protected:
     int breedTicks;
     City *city;
     int starvation;
-    friend class City;
+
 public:
     Organism();
     Organism( City *city, int x, int y );
@@ -40,11 +42,6 @@ public:
     virtual void starve() = 0;
     virtual void eat() = 0;
     virtual bool validEat(int cordinateX, int cordinateY) =0;
-
-
-
-
-//    enum direction_NUM{N, S, W,E,NW,NE,SE,SW };
     enum direction_NUM{NW,N,NE,E,SE,S,SW,W};
 
 //	virtual Organism* getPosition(int x, int y) = 0;

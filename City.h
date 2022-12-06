@@ -10,6 +10,8 @@
 #include "Organism.h"
 #include "GameSpecs.h"
 
+
+
 class Organism;
 class City
 {
@@ -26,11 +28,12 @@ public:
     int countType(int type);
     bool hasDiversity();//Ashton Added    randomize
     int getRandNumBetween(int startRange, int endRange) ;
-    int  getGeneration();
+
     int  getEaten();
     int  getRecruited();
     int  getCured();
     int  getConverted();
+    int  getGeneration();
 
     //Can either use protected with friend class members,
     //   private with getters and setters
@@ -38,7 +41,7 @@ public:
     friend class Human;
     friend class Organism;
     friend class Zombie;
-protected:
+public:
     Organism *grid[GRIDSIZE][GRIDSIZE];
     int gen;
     int eaten;
