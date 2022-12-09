@@ -29,7 +29,7 @@ int main() {
 
 
     int iteration =0;
-    while (city->hasDiversity() && iteration<ITERATIONS) { //while both humans and zombies exist
+    while (city->hasDiversity() || iteration<ITERATIONS) { //while both humans and zombies exist
         iteration++;
         this_thread::sleep_for(interval);//pause execution for (interval amount of time)
         ClearScreen();
@@ -49,5 +49,6 @@ int main() {
     cout << "STARTING SPECS: " << endl;
     cout << "HUMANS: " << HUMAN_STARTCOUNT << endl;
     cout << "ZOMBIES: " << ZOMBIE_STARTCOUNT << endl;
+    delete city;
 }//end main
 
